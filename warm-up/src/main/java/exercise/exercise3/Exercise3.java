@@ -31,8 +31,9 @@ public class Exercise3 {
     public void addElementsToSets(){
 
         HashSet<String> hashSet = new HashSet<String>();
-        TreeSet<String> treeSet = new TreeSet<String>();
+        TreeSet<String> treeSet = new TreeSet<String>(new MyComparator());
         LinkedHashSet<String> linkedHashSet = new LinkedHashSet<String>();
+
 
 
         System.out.println("The elements that will be added to the Sets: ");
@@ -61,5 +62,9 @@ public class Exercise3 {
         System.out.println(treeSet.toString());
         // TODO Exercise #3 d) Add to the TreeSet two elements that already exist in the Set
         // TODO Exercise #3 d) and print again the TreeSet. What do you see?
+
+
+
     }
 }
+
