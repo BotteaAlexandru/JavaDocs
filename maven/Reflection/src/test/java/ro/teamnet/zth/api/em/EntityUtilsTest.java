@@ -3,17 +3,17 @@ package ro.teamnet.zth.api.em;
 import org.junit.Test;
 import ro.teamnet.zth.api.annotations.Column;
 import ro.teamnet.zth.api.annotations.Id;
-import ro.teamnet.zth.appl.domain.*;
+import ro.teamnet.zth.appl.domain.Department;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
 /**
- * Created by user on 7/7/2016.
+ * Created by user on 07.07.2016.
  */
 public class EntityUtilsTest {
+
     @Test
     public void testGetTableNameMethod() {
         String tableName = EntityUtils.getTableName(Department.class);
@@ -21,26 +21,31 @@ public class EntityUtilsTest {
     }
 
     @Test
-    public void testGetColumns() {
-        ArrayList<ColumnInfo> columnInfos = EntityUtils.getColumns(Department.class);
-        assertEquals("The list of column infos is wrong!", 3, columnInfos.size());
+    public void testGetColumnsMethod() {
+        assertEquals("Department columnInfo list size should be 3", 3, EntityUtils.getColumns(Department.class).size());
     }
 
     @Test
-    public void testCastFromSqlType() {
-        assertEquals("The cast is wrong!", Integer.class, EntityUtils.castFromSqlType(new BigDecimal(30), Integer.class).getClass());
+    public void testCastFromSqlTypeMethod() {
+        assertEquals("Casted type should be Integer", Integer.class, EntityUtils.castFromSqlType(new BigDecimal(100), Integer.class).getClass());
     }
 
     @Test
-    public void testGetFieldsByAnnotationsForIds() {
-        assertEquals("Get Fields List size should be 1", 1, EntityUtils.getFieldsByAnnotations(Department.class, Id.class).size());
+    public void testGetFieldsByIdAnnotationMethod() {
+        assertEquals("Field list size with id annotation should be 1", 1, EntityUtils.getFieldsByAnnotations(Department.class, Id.class).size());
     }
 
     @Test
-    public void testGetFieldsByAnnotationsForColumns() {
-        assertEquals("Get Fields List size should be 2", 2, EntityUtils.getFieldsByAnnotations(Department.class, Column.class).size());
+    public void testGetFieldsByColumnAnnotationMethod() {
+        assertEquals("Field list size with column annotation should be 2", 2, EntityUtils.getFieldsByAnnotations(Department.class, Column.class).size());
     }
 
-
-
+    @Test
+    public void testGetSqlValueMethod() {
+        try {
+            assertEquals("Class of field with Id annotation should be Long", Long.class, EntityUtils.getSqlValue(new Department()).getClass());
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
 }

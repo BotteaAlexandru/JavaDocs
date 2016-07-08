@@ -1,17 +1,19 @@
 package ro.teamnet.zth.appl.domain;
 
-
-import ro.teamnet.zth.api.annotations.*;
+import ro.teamnet.zth.api.annotations.Column;
+import ro.teamnet.zth.api.annotations.Id;
+import ro.teamnet.zth.api.annotations.Table;
 
 import java.util.Date;
 
 /**
- * Created by user on 7/7/2016.
+ * Created by user on 07.07.2016.
  */
 @Table(name = "EMPLOYEES")
 public class Employee {
+
     @Id(name = "employee_id")
-    private String employeeId;
+    private Long id;
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")
@@ -21,30 +23,24 @@ public class Employee {
     @Column(name = "phone_number")
     private Long phoneNumber;
     @Column(name = "hire_date")
-    private Date date;
+    private Date hireDate;
     @Column(name = "job_id")
-    private Long jobId;
+    private String jobId;
     @Column(name = "salary")
     private Long salary;
     @Column(name = "commission_pct")
-    private Long commissionPct;
+    private Long commisionPct;
+    @Column(name = "manager_id")
+    private Long managerId;
     @Column(name = "department_id")
     private Long departmentId;
 
-    public Long getDepartmentId() {
-        return departmentId;
+    public Long getId() {
+        return id;
     }
 
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
-    }
-
-    public String getEmployeeId() {
-        return employeeId;
-    }
-
-    public void setEmployeeId(String employeeId) {
-        this.employeeId = employeeId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -79,19 +75,19 @@ public class Employee {
         this.phoneNumber = phoneNumber;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getHireDate() {
+        return hireDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setHireDate(Date hireDate) {
+        this.hireDate = hireDate;
     }
 
-    public Long getJobId() {
+    public String getJobId() {
         return jobId;
     }
 
-    public void setJobId(Long jobId) {
+    public void setJobId(String jobId) {
         this.jobId = jobId;
     }
 
@@ -103,28 +99,28 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Long getCommissionPct() {
-        return commissionPct;
+    public Long getCommisionPct() {
+        return commisionPct;
     }
 
-    public void setCommissionPct(Long commissionPct) {
-        this.commissionPct = commissionPct;
+    public void setCommisionPct(Long commisionPct) {
+        this.commisionPct = commisionPct;
     }
 
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "employeeId='" + employeeId + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber=" + phoneNumber +
-                ", date=" + date +
-                ", jobId=" + jobId +
-                ", salary=" + salary +
-                ", commissionPct=" + commissionPct +
-                ", departmentId=" + departmentId +
-                '}';
+    public Long getManagerId() {
+        return managerId;
+    }
+
+    public void setManagerId(Long managerId) {
+        this.managerId = managerId;
+    }
+
+    public Long getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
     }
 
     @Override
@@ -134,20 +130,36 @@ public class Employee {
 
         Employee employee = (Employee) o;
 
-        if (!employeeId.equals(employee.employeeId)) return false;
+        if (!id.equals(employee.id)) return false;
         if (firstName != null ? !firstName.equals(employee.firstName) : employee.firstName != null) return false;
         if (!lastName.equals(employee.lastName)) return false;
         if (!email.equals(employee.email)) return false;
         if (phoneNumber != null ? !phoneNumber.equals(employee.phoneNumber) : employee.phoneNumber != null)
             return false;
-        if (!date.equals(employee.date)) return false;
+        if (!hireDate.equals(employee.hireDate)) return false;
         if (!jobId.equals(employee.jobId)) return false;
         if (salary != null ? !salary.equals(employee.salary) : employee.salary != null) return false;
-        if (commissionPct != null ? !commissionPct.equals(employee.commissionPct) : employee.commissionPct != null)
+        if (commisionPct != null ? !commisionPct.equals(employee.commisionPct) : employee.commisionPct != null)
             return false;
+        if (managerId != null ? !managerId.equals(employee.managerId) : employee.managerId != null) return false;
         return departmentId != null ? departmentId.equals(employee.departmentId) : employee.departmentId == null;
 
     }
 
-
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber=" + phoneNumber +
+                ", hireDate=" + hireDate +
+                ", jobId='" + jobId + '\'' +
+                ", salary=" + salary +
+                ", commisionPct=" + commisionPct +
+                ", managerId=" + managerId +
+                ", departmentId=" + departmentId +
+                '}';
+    }
 }

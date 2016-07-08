@@ -5,89 +5,88 @@ import ro.teamnet.zth.api.annotations.Id;
 import ro.teamnet.zth.api.annotations.Table;
 
 import java.lang.annotation.Annotation;
+import java.lang.annotation.Documented;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 /**
- * Created by user on 7/7/2016.
+ * Created by user on 07.07.2016.
  */
 public class EntityUtils {
 
-    public EntityUtils() throws UnsupportedOperationException {
+    private EntityUtils() {
+        throw new UnsupportedOperationException();
     }
 
     public static String getTableName(Class entity) {
-        Table annotation = (Table) entity.getAnnotation(Table.class);
-        return annotation.name();
+
+        return ((Table) entity.getAnnotation(Table.class)).name();
     }
 
-    public static ArrayList<ColumnInfo> getColumns(Class entity) {
-        ArrayList<ColumnInfo> r = new ArrayList<ColumnInfo>();
+    public static LinkedList<ColumnInfo> getColumns(Class entity) {
 
-        for (Field a : entity.getDeclaredFields()) {
+        LinkedList<ColumnInfo> columnInfos = new LinkedList<>();
+
+        for (Field field : entity.getDeclaredFields()) {
 
             ColumnInfo newColumnInfo = new ColumnInfo();
+            Annotation annotation = field.getAnnotation(Column.class);
 
-            newColumnInfo.setColumnName(a.getName());
-            newColumnInfo.setColumnType(a.getType());
-
-            Column c = (Column) a.getAnnotation(Column.class);
-
-            if (c != null)
-                newColumnInfo.setDbName(c.name());
-            else {
-                Id i = (Id) a.getAnnotation(Id.class);
+            if (annotation == null) {
+                newColumnInfo.setDbName(field.getAnnotation(Id.class).name());
                 newColumnInfo.setId(true);
-                newColumnInfo.setDbName(i.name());
+            } else {
+                newColumnInfo.setDbName(((Column) annotation).name());
             }
 
-            r.add(newColumnInfo);
+            newColumnInfo.setColumnName(field.getName());
+            newColumnInfo.setColumnType(field.getType());
+            columnInfos.add(newColumnInfo);
         }
-
-        return r;
+        return columnInfos;
     }
 
     public static Object castFromSqlType(Object value, Class wantedType) {
-        if (value.getClass() == BigDecimal.class && wantedType == Integer.class){
-            return ((BigDecimal)value).intValue();
-        }
-        if (value.getClass() == BigDecimal.class && wantedType == Long.class){
-            return ((BigDecimal)value).longValue();
-        }
-        if (value.getClass() == BigDecimal.class && wantedType == Float.class){
-            return ((BigDecimal)value).floatValue();
 
+        if (value.getClass() == BigDecimal.class && wantedType == Integer.class) {
+            return ((BigDecimal) value).intValue();
         }
-        if (value.getClass() == BigDecimal.class && wantedType == Double.class){
-            return ((BigDecimal)value).doubleValue();
+        if (value.getClass() == BigDecimal.class && wantedType == Long.class) {
+            return ((BigDecimal) value).longValue();
+        }
+        if (value.getClass() == BigDecimal.class && wantedType == Float.class) {
+            return ((BigDecimal) value).floatValue();
+        }
+        if (value.getClass() == BigDecimal.class && wantedType == Double.class) {
+            return ((BigDecimal) value).doubleValue();
         }
         return value;
     }
 
-    public static ArrayList<Field> getFieldsByAnnotations(Class clazz, Class annotation) {
-        ArrayList<Field> fields = new ArrayList<Field>();
+    public static LinkedList<Field> getFieldsByAnnotations(Class clazz, Class annotation) {
+
+        LinkedList<Field> fields = new LinkedList<>();
+
         for (Field field : clazz.getDeclaredFields()) {
             if (field.isAnnotationPresent(annotation)) {
                 fields.add(field);
             }
         }
-
         return fields;
     }
 
     public static Object getSqlValue(Object object) throws IllegalAccessException {
-        if (object.getClass().isAnnotationPresent(Table.class)){
+
+        if (object.getClass().isAnnotationPresent(Table.class)) {
+
             for (Field field : object.getClass().getDeclaredFields()) {
-                if(field.isAnnotationPresent(Id.class)){
+                if (field.isAnnotationPresent(Id.class)) {
                     field.setAccessible(true);
                     return field.get(object);
                 }
             }
-
         }
-
         return object;
     }
 }

@@ -1,12 +1,15 @@
 package ro.teamnet.zth.appl.domain;
 
-import ro.teamnet.zth.api.annotations.*;
+import ro.teamnet.zth.api.annotations.Column;
+import ro.teamnet.zth.api.annotations.Id;
+import ro.teamnet.zth.api.annotations.Table;
 
 /**
- * Created by user on 7/7/2016.
+ * Created by user on 07.07.2016.
  */
 @Table(name = "LOCATIONS")
 public class Location {
+
     @Id(name = "location_id")
     private Long id;
     @Column(name = "street_address")
@@ -59,17 +62,6 @@ public class Location {
     }
 
     @Override
-    public String toString() {
-        return "Location{" +
-                "id=" + id +
-                ", streetAddress='" + streetAddress + '\'' +
-                ", postalCode='" + postalCode + '\'' +
-                ", city='" + city + '\'' +
-                ", stateProvince='" + stateProvince + '\'' +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -83,5 +75,16 @@ public class Location {
         if (!city.equals(location.city)) return false;
         return stateProvince != null ? stateProvince.equals(location.stateProvince) : location.stateProvince == null;
 
+    }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "id=" + id +
+                ", streetAddress='" + streetAddress + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", city='" + city + '\'' +
+                ", stateProvince='" + stateProvince + '\'' +
+                '}';
     }
 }

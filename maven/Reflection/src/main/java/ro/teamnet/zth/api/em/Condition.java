@@ -1,7 +1,7 @@
 package ro.teamnet.zth.api.em;
 
 /**
- * Created by user on 7/7/2016.
+ * Created by user on 07.07.2016.
  */
 public class Condition {
 

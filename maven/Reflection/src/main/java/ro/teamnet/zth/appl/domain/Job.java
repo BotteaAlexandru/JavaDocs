@@ -5,18 +5,19 @@ import ro.teamnet.zth.api.annotations.Id;
 import ro.teamnet.zth.api.annotations.Table;
 
 /**
- * Created by user on 7/7/2016.
+ * Created by user on 07.07.2016.
  */
 @Table(name = "JOBS")
 public class Job {
+
     @Id(name = "job_id")
     private String id;
     @Column(name = "job_title")
     private String jobTitle;
-    @Column(name = "max_salary")
-    private Long maxSalary;
     @Column(name = "min_salary")
     private Long minSalary;
+    @Column(name = "max_salary")
+    private Long maxSalary;
 
     public String getId() {
         return id;
@@ -34,20 +35,20 @@ public class Job {
         this.jobTitle = jobTitle;
     }
 
-    public Long getMaxSalary() {
-        return maxSalary;
-    }
-
-    public void setMaxSalary(Long maxSalary) {
-        this.maxSalary = maxSalary;
-    }
-
     public Long getMinSalary() {
         return minSalary;
     }
 
     public void setMinSalary(Long minSalary) {
         this.minSalary = minSalary;
+    }
+
+    public Long getMaxSalary() {
+        return maxSalary;
+    }
+
+    public void setMaxSalary(Long maxSalary) {
+        this.maxSalary = maxSalary;
     }
 
     @Override
@@ -58,9 +59,19 @@ public class Job {
         Job job = (Job) o;
 
         if (!id.equals(job.id)) return false;
-        if (jobTitle != null ? !jobTitle.equals(job.jobTitle) : job.jobTitle != null) return false;
-        if (maxSalary != null ? !maxSalary.equals(job.maxSalary) : job.maxSalary != null) return false;
-        return minSalary != null ? minSalary.equals(job.minSalary) : job.minSalary == null;
+        if (!jobTitle.equals(job.jobTitle)) return false;
+        if (minSalary != null ? !minSalary.equals(job.minSalary) : job.minSalary != null) return false;
+        return maxSalary != null ? maxSalary.equals(job.maxSalary) : job.maxSalary == null;
 
+    }
+
+    @Override
+    public String toString() {
+        return "Job{" +
+                "id=" + id +
+                ", jobTitle='" + jobTitle + '\'' +
+                ", minSalary=" + minSalary +
+                ", maxSalary=" + maxSalary +
+                '}';
     }
 }
