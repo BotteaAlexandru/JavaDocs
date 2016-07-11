@@ -5,9 +5,9 @@ package ro.teamnet.zth.api.database;
  */
 public interface DBProperties {
 
-    String IP = "192.168.99.100";
+    String IP = "localhost";
     String PORT = "49161";
-    String USER = "onegoita"; // user from SQL workshop
-    String PASS = "passkek"; // pass from SQL workshop
+    String USER = "abottea"; // user from SQL workshop
+    String PASS = "abottea"; // pass from SQL workshop
     String DRIVER_CLASS = "oracle.jdbc.driver.OracleDriver";
 }
