@@ -20,11 +20,11 @@
             <scope>provided</scope>
         </dependency>
 
-        <!--<dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.35</version>
-        </dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>mysql</groupId>-->
+            <!--<artifactId>mysql-connector-java</artifactId>-->
+            <!--<version>5.1.35</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>com.oracle</groupId>
@@ -52,7 +52,7 @@
                 <version>2.2</version>
                 <configuration>
                     <server>local_tomcat</server>
-                    <url>http://docker.local:49100/manager/text</url>
+                    <url>http://192.168.99.100:49100/manager/text</url>
                 </configuration>
             </plugin>
         </plugins>

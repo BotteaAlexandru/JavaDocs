@@ -1,6 +1,6 @@
 /**
  * HelloWorldServlet.java
- *
+ * <p>
  * <p>
  * Copyright (c) 2014 Teamnet. All Rights Reserved.
  * <p>
@@ -10,6 +10,7 @@
  **/
 package ro.teamnet.zth.web;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,16 +31,23 @@ public class HelloWorldServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String user = "";
+//        String user = "";
 
         // Set the response type
-        response.setContentType("text/html");
+//        response.setContentType("text/html");
 
         // Obtain the user from the request instance
-        user = request.getParameter("user");
+//        user = request.getParameter("user");
+//
+//        //Write the response content
+//        response.getWriter().write("Hello <b>" + user + "</b>");
+        request.setAttribute("testAttribute", "Enjoy Z2H");
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/helloforward");
 
-        //Write the response content
-        response.getWriter().write("Hello <b>" + user + "</b>");
+        requestDispatcher.forward(request, response);
+
+
     }
+
 
 }
