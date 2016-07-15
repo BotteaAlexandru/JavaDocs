@@ -1,7 +1,9 @@
 package ro.teamnet.zth;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import ro.teamnet.zth.api.annotations.MyController;
 import ro.teamnet.zth.api.annotations.MyRequestMethod;
+import ro.teamnet.zth.api.annotations.MyRequestParam;
 import ro.teamnet.zth.appl.controller.DepartmentController;
 import ro.teamnet.zth.appl.controller.EmployeeController;
 import ro.teamnet.zth.fmk.AnnotationScanUtils;
@@ -14,10 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.lang.reflect.Parameter;
+import java.util.*;
 
 /**
  * Created by user on 7/14/2016.
@@ -48,13 +48,14 @@ public class DispatcherServlet extends HttpServlet {
                                     controllerMethod.getAnnotation(MyRequestMethod.class);
                             String methodUrlPath = myRequestMethod.urlPath();
                             // build hashmap key
-                            String urlPath = controllerUrlPath + methodUrlPath;
+                            String urlPath = controllerUrlPath + methodUrlPath + myRequestMethod.methodType();
 
                             // build hashmap value
                             MethodAttributes methodAttributes = new MethodAttributes();
                             methodAttributes.setControllerClass(controller.getName());
                             methodAttributes.setMethodType(myRequestMethod.methodType());
                             methodAttributes.setMethodName(controllerMethod.getName());
+                            methodAttributes.setParameterTypes(controllerMethod.getParameterTypes());
 
                             // add to map
                             allowedMethods.put(urlPath, methodAttributes);
@@ -80,11 +81,16 @@ public class DispatcherServlet extends HttpServlet {
 
     }
 
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        dispatchReply("DELETE", req, resp);
+    }
+
     protected void dispatchReply(String type, HttpServletRequest req, HttpServletResponse resp) {
 
         Object r = null;
         try {
-            r = dispatch(req, resp);
+            r = dispatch(type, req, resp);
             reply(r, req, resp);
         } catch (Exception e) {
             sendExceptionError(e, req, resp);
@@ -96,14 +102,32 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     private void reply(Object r, HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.getWriter().printf(r.toString());
+//        resp.setContentType("text/javascript");
+//        resp.getWriter().printf(r.toString());
+        ObjectMapper objectMapper = new ObjectMapper();
+        resp.getWriter().printf(objectMapper.writeValueAsString(r));
     }
 
-    private Object dispatch(HttpServletRequest req, HttpServletResponse resp) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
-        String pathInfo = req.getPathInfo();
+    private Object dispatch(String typ, HttpServletRequest req, HttpServletResponse resp) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+        String pathInfo = req.getPathInfo() + typ;
+
 
         MethodAttributes methodAttributes = allowedMethods.get(pathInfo);
         Object controller = Class.forName(methodAttributes.getControllerClass()).newInstance();
-        return controller.getClass().getMethod(methodAttributes.getMethodName()).invoke(controller);
+        List<Object> params = new ArrayList<>();
+
+        Method method = controller.getClass().getMethod(methodAttributes.getMethodName(), methodAttributes.getParameterTypes());
+        Parameter[] parameters = method.getParameters();
+        for (Parameter parameter : parameters) {
+            if (parameter.isAnnotationPresent(MyRequestParam.class)) {
+                MyRequestParam annotation = parameter.getAnnotation(MyRequestParam.class);
+                String name = annotation.name();
+                String requestParamValue = req.getParameter(name);
+                Class<?> type = parameter.getType();
+                Object requestParamObject = new ObjectMapper().readValue(requestParamValue, type);
+                params.add(requestParamObject);
+            }
+        }
+        return method.invoke(controller, params.toArray());
     }
 }

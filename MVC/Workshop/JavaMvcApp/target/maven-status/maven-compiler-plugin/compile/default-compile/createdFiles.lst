@@ -1,3 +1,5 @@
+ro\teamnet\zth\api\annotations\MyRequestParam.class
+ro\teamnet\zth\appl\service\EmployeeService.class
 ro\teamnet\zth\appl\controller\JobController.class
 ro\teamnet\zth\DispatcherServlet.class
 ro\teamnet\zth\api\database\DBManager.class
@@ -11,6 +13,7 @@ ro\teamnet\zth\appl\controller\LocationController.class
 ro\teamnet\zth\appl\dao\EmployeeDao.class
 ro\teamnet\zth\appl\dao\DepartmentDao.class
 ro\teamnet\zth\api\database\DBProperties.class
+ro\teamnet\zth\appl\service\DepartmentService.class
 ro\teamnet\zth\api\em\EntityManagerImpl.class
 ro\teamnet\zth\api\annotations\Id.class
 ro\teamnet\zth\appl\dao\LocationDao.class
@@ -25,5 +28,7 @@ ro\teamnet\zth\api\em\Condition.class
 ro\teamnet\zth\api\em\EntityManager.class
 ro\teamnet\zth\api\em\EntityUtils.class
 ro\teamnet\zth\appl\domain\Job.class
+ro\teamnet\zth\appl\service\DepartmentServiceImpl.class
 ro\teamnet\zth\api\annotations\Column.class
 ro\teamnet\zth\fmk\AnnotationScanUtils.class
+ro\teamnet\zth\appl\service\EmployeeServiceImpl.class
