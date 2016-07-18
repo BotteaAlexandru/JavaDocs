@@ -86,6 +86,11 @@ public class DispatcherServlet extends HttpServlet {
         dispatchReply("DELETE", req, resp);
     }
 
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        dispatchReply("PUT", req, resp);
+    }
+
     protected void dispatchReply(String type, HttpServletRequest req, HttpServletResponse resp) {
 
         Object r = null;
@@ -124,8 +129,17 @@ public class DispatcherServlet extends HttpServlet {
                 String name = annotation.name();
                 String requestParamValue = req.getParameter(name);
                 Class<?> type = parameter.getType();
-                Object requestParamObject = new ObjectMapper().readValue(requestParamValue, type);
-                params.add(requestParamObject);
+
+                if(name.equals("id")){
+                    Object requestParamObject = new ObjectMapper().readValue(requestParamValue, type);
+                    params.add(requestParamObject);
+                }
+
+                else {
+                    String json = req.getReader().readLine();
+                    params.add(new ObjectMapper().readValue(json, parameter.getType()));
+                }
+
             }
         }
         return method.invoke(controller, params.toArray());
